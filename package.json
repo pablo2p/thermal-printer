@@ -1,0 +1,23 @@
+{
+  "name": "thermal-printer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablo2p/thermal-printer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pablo2p/thermal-printer/issues"
+  },
+  "homepage": "https://github.com/pablo2p/thermal-printer#readme",
+  "dependencies": {
+    "node-thermal-printer": "^4.2.0"
+  }
+}
