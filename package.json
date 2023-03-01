@@ -19,6 +19,7 @@
   "homepage": "https://github.com/pablo2p/thermal-printer#readme",
   "dependencies": {
     "@flovy/node-printer": "^0.6.3",
-    "node-thermal-printer": "^4.2.0"
+    "node-thermal-printer": "^4.2.0",
+    "ppla-builder": "^0.1.5"
   }
 }
