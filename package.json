@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/pablo2p/thermal-printer#readme",
   "dependencies": {
-    "node-thermal-printer": "^4.2.0",
-    "zuzel-printer": "^1.0.4"
+    "node-thermal-printer": "^4.2.0"
   }
 }
