@@ -3,6 +3,8 @@ const PrinterTypes = require('node-thermal-printer').types;
 const nodePrinter = require('@flovy/node-printer');
 
 const listPrinters = nodePrinter.getPrinters();
+console.log(nodePrinter.getDefaultPrinterName());
+console.log(nodePrinter.getPrinterDriverOptions());
 
 (async () => {
   for (const printer of listPrinters) {
