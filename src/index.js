@@ -7,7 +7,7 @@ const listPrinters = nodePrinter.getPrinters();
 (async () => {
   for (const printer of listPrinters) {
     const { shareName, driverName, portName, name } = printer || {};
-    if (shareName !== 'tanquinhausb') continue;
+    if (shareName !== 'MP-4200') continue;
 
     console.log(`Olha a ${shareName} feliz da vida! - ${driverName}`);
 
