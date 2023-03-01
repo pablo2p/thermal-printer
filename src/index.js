@@ -21,7 +21,7 @@ const listPrinters = nodePrinter.getPrinters();
     if (portName.match(/^\d/)) {
       thermalOpts['interface'] = `TCP://${portName}`;
     } else {
-      thermalOpts['interface'] = 'printer:auto';
+      thermalOpts['interface'] = `printer:${driverName}`;
     }
 
     let printerConstructor = null;
