@@ -1,8 +1,7 @@
-const ThermalPrinter = require('node-thermal-printer').printer;
-const PrinterTypes = require('node-thermal-printer').types;
-const nodePrinter = require('@flovy/node-printer');
+import { printer as ThermalPrinter, types as PrinterTypes } from './lib';
+import nodePrinter, { getPrinters } from '@flovy/node-printer';
 
-const listPrinters = nodePrinter?.getPrinters();
+const listPrinters: any = getPrinters();
 
 (async () => {
   for (const printer of listPrinters) {
@@ -11,7 +10,7 @@ const listPrinters = nodePrinter?.getPrinters();
 
     console.log(`Olha a ${shareName} feliz da vida! - ${driverName}`);
 
-    const thermalOpts = {
+    const thermalOpts: any = {
       type: PrinterTypes.TANCA,
     };
 
@@ -23,7 +22,7 @@ const listPrinters = nodePrinter?.getPrinters();
       thermalOpts['driver'] = nodePrinter;
     }
 
-    let printerConstructor = null;
+    let printerConstructor: any = null;
     try {
       printerConstructor = new ThermalPrinter(thermalOpts);
     } catch (e) {
@@ -48,7 +47,7 @@ const listPrinters = nodePrinter?.getPrinters();
     printerConstructor?.beep();
 
     try {
-      await printerConstructor.execute(function (err) {
+      await printerConstructor.execute(function (err: any) {
         if (err) {
           console.error('Print failed', err);
         } else {
