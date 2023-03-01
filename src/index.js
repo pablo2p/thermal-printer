@@ -1,15 +1,17 @@
 const ThermalPrinter = require('node-thermal-printer').printer;
 const PrinterTypes = require('node-thermal-printer').types;
 const nodePrinter = require('@flovy/node-printer');
+const electron =
+  typeof process !== 'undefined' &&
+  process.versions &&
+  !!process.versions.electron;
 
 const listPrinters = nodePrinter.getPrinters();
-console.log(nodePrinter.getDefaultPrinterName());
-console.log(nodePrinter.getPrinterDriverOptions());
 
 (async () => {
   for (const printer of listPrinters) {
     const { shareName, driverName, portName } = printer || {};
-    if (shareName !== 'tanquinha') continue;
+    if (shareName !== 'tanquinhausb') continue;
     // Portname se começar com número é o ip
     // USB PORT: -> é via usb
 
@@ -24,6 +26,9 @@ console.log(nodePrinter.getPrinterDriverOptions());
       thermalOpts['interface'] = `TCP://${portName}`;
     } else {
       thermalOpts['interface'] = `printer:${driverName}`;
+      thermalOpts['driver'] = require(electron
+        ? 'electron-printer'
+        : 'printer');
     }
 
     let printerConstructor = null;
