@@ -18,7 +18,7 @@ const listPrinters = nodePrinter.getPrinters();
     };
 
     // not started with number
-    if (!portName.match(/^\d/)) {
+    if (portName.match(/^\d/)) {
       thermalOpts['interface'] = `TCP://${portName}`;
     } else {
       thermalOpts['interface'] = 'printer:auto';
