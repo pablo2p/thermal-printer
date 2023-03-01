@@ -46,8 +46,19 @@ const listPrinters = nodePrinter.getPrinters();
     printerConstructor.cut();
     printerConstructor.beep();
 
+    printerConstructor.isPrinterConnected(function (isConnected) {
+      console.log('isConnected', isConnected);
+      console.log(printerConstructor.getBuffer());
+    });
+
     try {
-      await printerConstructor.execute();
+      await printerConstructor.execute(function (err) {
+        if (err) {
+          console.error('Print failed', err);
+        } else {
+          console.log('Print done');
+        }
+      });
       console.error('Print Finish!');
     } catch (error) {
       console.log('Print Error:', error);
