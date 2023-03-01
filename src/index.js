@@ -11,10 +11,10 @@ const listPrinters = nodePrinter.getPrinters();
     // Portname se começar com número é o ip
     // USB PORT: -> é via usb
 
-    console.log(`Olha a ${shareName} feliz da vida!`);
+    console.log(`Olha a ${shareName} feliz da vida! - ${driverName}`);
 
     // not started with number
-    if (!s.match(/^\d/)) {
+    if (!portName.match(/^\d/)) {
       continue;
     }
 
