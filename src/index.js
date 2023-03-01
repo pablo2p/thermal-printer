@@ -1,35 +1,42 @@
-const ThermalPrinter = require('node-thermal-printer').printer;
-const PrinterTypes = require('node-thermal-printer').types;
+// const ThermalPrinter = require('node-thermal-printer').printer;
+// const PrinterTypes = require('node-thermal-printer').types;
+var Printer = require('zuzel-printer');
+const util = require('util');
 
-let printer = null;
-try {
-  printer = new ThermalPrinter({
-    type: PrinterTypes.TANCA,
-    interface: 'printer:tanquinha',
-  });
-} catch (e) {
-  console.log('Failed to try to print');
-}
+console.log(
+  'installed printers:\n' +
+    util.inspect(Printer.list(), { colors: true, depth: 10 })
+);
 
-if (!printer) return;
+// let printer = null;
+// try {
+//   printer = new ThermalPrinter({
+//     type: PrinterTypes.TANCA,
+//     interface: 'printer:auto',
+//   });
+// } catch (e) {
+//   console.log('Failed to try to print');
+// }
 
-(async () => {
-  const isConnected = await printer.isPrinterConnected();
-  console.log('Status da impressora: ', isConnected);
+// if (!printer) return;
 
-  if (!isConnected)
-    return console.log(
-      'Impressora desligada, portanto não foi possível imprimir!'
-    );
+// (async () => {
+//   const isConnected = await printer.isPrinterConnected();
+//   console.log('Status da impressora: ', isConnected);
 
-  printer.alignCenter();
-  printer.println('Testing Print');
-  printer.cut();
+//   if (!isConnected)
+//     return console.log(
+//       'Impressora desligada, portanto não foi possível imprimir!'
+//     );
 
-  try {
-    await printer.execute();
-    console.error('Print Finish!');
-  } catch (error) {
-    console.log('Print Error:', error);
-  }
-})();
+//   printer.alignCenter();
+//   printer.println('Testing Print');
+//   printer.cut();
+
+//   try {
+//     await printer.execute();
+//     console.error('Print Finish!');
+//   } catch (error) {
+//     console.log('Print Error:', error);
+//   }
+// })();
