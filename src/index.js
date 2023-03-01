@@ -5,7 +5,7 @@ let printer = null;
 try {
   printer = new ThermalPrinter({
     type: PrinterTypes.TANCA,
-    interface: 'printer:auto',
+    interface: 'printer:tanquinha',
   });
 } catch (e) {
   console.log('Failed to try to print');
@@ -13,13 +13,23 @@ try {
 
 if (!printer) return;
 
-printer.alignCenter();
-printer.println('Testing Print');
-printer.cut();
+(async () => {
+  const isConnected = await printer.isPrinterConnected();
+  console.log('Status da impressora: ', isConnected);
 
-try {
-  printer.execute();
-  console.error('Print Finish!');
-} catch (error) {
-  console.log('Print Error:', error);
-}
+  if (!isConnected)
+    return console.log(
+      'Impressora desligada, portanto não foi possível imprimir!'
+    );
+
+  printer.alignCenter();
+  printer.println('Testing Print');
+  printer.cut();
+
+  try {
+    await printer.execute();
+    console.error('Print Finish!');
+  } catch (error) {
+    console.log('Print Error:', error);
+  }
+})();
