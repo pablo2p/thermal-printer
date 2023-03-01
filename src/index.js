@@ -13,17 +13,20 @@ const listPrinters = nodePrinter.getPrinters();
 
     console.log(`Olha a ${shareName} feliz da vida! - ${driverName}`);
 
+    const thermalOpts = {
+      type: PrinterTypes.TANCA,
+    };
+
     // not started with number
     if (!portName.match(/^\d/)) {
-      continue;
+      thermalOpts['interface'] = `TCP://${portName}`;
+    } else {
+      thermalOpts['interface'] = 'printer:auto';
     }
 
     let printerConstructor = null;
     try {
-      printerConstructor = new ThermalPrinter({
-        type: PrinterTypes.TANCA,
-        interface: `TCP://${portName}`,
-      });
+      printerConstructor = new ThermalPrinter(thermalOpts);
     } catch (e) {
       console.log('Failed to try to print');
     }
@@ -39,8 +42,10 @@ const listPrinters = nodePrinter.getPrinters();
       );
 
     printerConstructor.alignCenter();
+    printerConstructor.print('Cresci e Perdi');
     printerConstructor.println('Testing Print');
     printerConstructor.cut();
+    printerConstructor.beep();
 
     try {
       await printerConstructor.execute();
