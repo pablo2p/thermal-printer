@@ -1,6 +1,6 @@
 class PrinterType {
   constructor() {
-    console.error('Consturctor not set');
+    console.error('Printer Not Initialized');
   }
 
   beep() {

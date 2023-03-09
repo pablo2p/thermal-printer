@@ -52,12 +52,16 @@ const CharacterSet = {
   CHINA: 'CHINA',
   HK_TW: 'HK_TW',
   TCVN_VIETNAMESE: 'TCVN_VIETNAMESE',
-}
+};
 
 class ThermalPrinter {
   constructor(initConfig) {
     const getInterface = require('./interfaces');
-    this.Interface = getInterface(initConfig.interface, initConfig.options, initConfig.driver);
+    this.Interface = getInterface(
+      initConfig.interface,
+      initConfig.options,
+      initConfig.driver
+    );
     this.buffer = null;
     this.config = null;
     this.printer = null;
@@ -144,10 +148,15 @@ class ThermalPrinter {
 
   print(text) {
     text = text || '';
-    if (this.config.breakLine != BreakLine.NONE) { // Break lines
-      text = this._fold(text, this.config.width, this.config.breakLine == BreakLine.CHARACTER).join("\n");
+    if (this.config.breakLine != BreakLine.NONE) {
+      // Break lines
+      text = this._fold(
+        text,
+        this.config.width,
+        this.config.breakLine == BreakLine.CHARACTER
+      ).join('\n');
     }
-    console.log(text)
+    console.log(text);
     this.append(text.toString());
   }
 
@@ -251,7 +260,8 @@ class ThermalPrinter {
   // ----------------------------------------------------- LEFT RIGHT -----------------------------------------------------
   leftRight(left, right) {
     this.append(left.toString());
-    const width = this.config.width - left.toString().length - right.toString().length;
+    const width =
+      this.config.width - left.toString().length - right.toString().length;
     for (let i = 0; i < width; i++) {
       this.append(Buffer.from(' '));
     }
@@ -408,7 +418,11 @@ class ThermalPrinter {
   async printImageBuffer(buffer) {
     try {
       const png = PNG.sync.read(buffer);
-      const buff = this.printer.printImageBuffer(png.width, png.height, png.data);
+      const buff = this.printer.printImageBuffer(
+        png.width,
+        png.height,
+        png.data
+      );
       this.append(buff);
       return buff;
     } catch (error) {
@@ -464,7 +478,10 @@ class ThermalPrinter {
         if (!/^[\x00-\x7F]$/.test(char)) {
           // Test if the active code page can print the current character.
           try {
-            code = iconv.encode(char, this.printer.config.CODE_PAGES[this.config.codePage]);
+            code = iconv.encode(
+              char,
+              this.printer.config.CODE_PAGES[this.config.codePage]
+            );
           } catch (e) {
             // Probably encoding not recognized.
             console.error(e);
@@ -473,8 +490,11 @@ class ThermalPrinter {
 
           if (code.toString() === '?') {
             // Character not available in active code page, now try all other code pages.
-            for (const tmpCodePageKey of Object.keys(this.printer.config.CODE_PAGES)) {
-              const tmpCodePage = this.printer.config.CODE_PAGES[tmpCodePageKey];
+            for (const tmpCodePageKey of Object.keys(
+              this.printer.config.CODE_PAGES
+            )) {
+              const tmpCodePage =
+                this.printer.config.CODE_PAGES[tmpCodePageKey];
 
               try {
                 code = iconv.encode(char, tmpCodePage);
@@ -486,14 +506,19 @@ class ThermalPrinter {
               if (code.toString() !== '?') {
                 // We found a match, change active code page.
                 this.config.codePage = tmpCodePageKey;
-                code = Buffer.concat([this.printer.config[`CODE_PAGE_${tmpCodePageKey}`], code]);
+                code = Buffer.concat([
+                  this.printer.config[`CODE_PAGE_${tmpCodePageKey}`],
+                  code,
+                ]);
                 break;
               }
             }
           }
         }
 
-        endBuff = endBuff ? Buffer.concat([endBuff, Buffer.from(code)]) : Buffer.from(code);
+        endBuff = endBuff
+          ? Buffer.concat([endBuff, Buffer.from(code)])
+          : Buffer.from(code);
       }
       text = endBuff;
     }
@@ -516,7 +541,7 @@ class ThermalPrinter {
    * @param {boolean} breakWord - Break word or character
    * @param {array} lineArray - Array of lines passed for recursion
    * @returns {array} Array of lines
-  */
+   */
   _fold(text, lineSize, breakWord, lineArray) {
     lineArray = lineArray || [];
     if (text.length <= lineSize) {
@@ -527,7 +552,12 @@ class ThermalPrinter {
     if (!breakWord) {
       // Insert newlines anywhere
       lineArray.push(line);
-      return this._fold(text.substring(lineSize), lineSize, breakWord, lineArray);
+      return this._fold(
+        text.substring(lineSize),
+        lineSize,
+        breakWord,
+        lineArray
+      );
     } else {
       // Attempt to insert newlines after whitespace
       const lastSpaceRgx = /\s(?!.*\s)/;
@@ -538,7 +568,12 @@ class ThermalPrinter {
         nextIdx = idx;
       }
       lineArray.push(line);
-      return this._fold(text.substring(nextIdx), lineSize, breakWord, lineArray);
+      return this._fold(
+        text.substring(nextIdx),
+        lineSize,
+        breakWord,
+        lineArray
+      );
     }
   }
 }
@@ -552,5 +587,5 @@ module.exports = {
   ThermalPrinter,
   PrinterTypes,
   BreakLine,
-  CharacterSet
+  CharacterSet,
 };

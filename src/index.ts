@@ -1,15 +1,17 @@
 import { printer as ThermalPrinter, types as PrinterTypes } from './lib';
 import nodePrinter, { getPrinters } from '@flovy/node-printer';
+import { cashierConferency } from './printer/cashierConferency';
+import { example } from './printer/exemplae';
 
 const listPrinters: any = getPrinters();
+const defaultShareName = 'dfcom_printer';
 
 (async () => {
   for (const printer of listPrinters) {
     const { shareName, driverName, portName, name } = printer || {};
-    if (shareName !== 'argoxinha') continue;
+    // if (!String(shareName).includes(defaultShareName)) continue;
 
-    console.log(`Olha a ${shareName} feliz da vida! - ${driverName}`);
-
+    console.log(driverName);
     const thermalOpts: any = {
       type: PrinterTypes.TANCA,
     };
@@ -22,40 +24,41 @@ const listPrinters: any = getPrinters();
       thermalOpts['driver'] = nodePrinter;
     }
 
-    let printerConstructor: any = null;
+    let thermalPrinter: any = null;
     try {
-      printerConstructor = new ThermalPrinter(thermalOpts);
+      thermalPrinter = new ThermalPrinter(thermalOpts);
     } catch (e) {
       console.log('Failed to try to print');
     }
 
-    if (!printerConstructor) return;
+    if (!thermalPrinter) return;
 
-    const isConnected = await printerConstructor.isPrinterConnected();
+    const isConnected = await thermalPrinter.isPrinterConnected();
     console.log('Status da impressora: ', isConnected);
 
-    if (!isConnected)
+    if (!isConnected) {
       return console.log(
         'Impressora desligada, portanto não foi possível imprimir!'
       );
+    }
 
-    printerConstructor?.alignCenter();
-    printerConstructor?.newLine();
-    printerConstructor?.print('Cresci e Perdi');
-    printerConstructor?.println('Testing Print');
-    printerConstructor?.cut();
-    printerConstructor?.beep();
+    const printerOpts = {
+      cashierConferency,
+      example,
+    };
+
+    const printerType = 'example';
+
+    // for (const printerDetails of Object.values(printerOpts)) {
+    // printerDetails(thermalPrinter);
+    printerOpts[printerType](thermalPrinter);
 
     try {
-      await printerConstructor.execute(function (err: any) {
-        if (err) {
-          console.error('Print failed', err);
-        } else {
-          console.log('Print done');
-        }
-      });
+      await thermalPrinter.execute();
     } catch (error) {
       console.log('Print Error:', error);
+      continue;
     }
+    // }
   }
 })();
